@@ -1,0 +1,143 @@
+openapi: 3.0.0
+info:
+  title: API Documentation
+  description: Dokumentasi API untuk aplikasi
+  version: 1.0.0
+servers:
+  - url: http://localhost:3000
+    description: Development server
+paths:
+  /api/register:
+    post:
+      tags:
+        - Authentication
+      summary: Register pengguna baru
+      description: Endpoint untuk mendaftarkan pengguna baru ke sistem
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                  description: Username pengguna
+                  example: johndoe
+                email:
+                  type: string
+                  format: email
+                  description: Alamat email pengguna
+                  example: john@example.com
+                password:
+                  type: string
+                  description: Password pengguna (minimal 6 karakter)
+                  example: "123456"
+      responses:
+        '201':
+          description: Pengguna berhasil didaftarkan
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  message:
+                    type: string
+                    example: Registrasi berhasil
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 1
+                      username:
+                        type: string
+                        example: johndoe
+                      email:
+                        type: string
+                        example: john@example.com
+        '400':
+          description: Data tidak valid
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: error
+                  message:
+                    type: string
+                    example: Email sudah terdaftar
+  
+  /api/login:
+    post:
+      tags:
+        - Authentication
+      summary: Login pengguna
+      description: Endpoint untuk melakukan autentikasi pengguna
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+                  description: Alamat email pengguna
+                  example: john@example.com
+                password:
+                  type: string
+                  description: Password pengguna
+                  example: "123456"
+      responses:
+        '200':
+          description: Login berhasil
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  message:
+                    type: string
+                    example: Login berhasil
+                  data:
+                    type: object
+                    properties:
+                      token:
+                        type: string
+                        example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+                      user:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                            example: 1
+                          username:
+                            type: string
+                            example: johndoe
+                          email:
+                            type: string
+                            example: john@example.com
+        '401':
+          description: Autentikasi gagal
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: error
+                  message:
+                    type: string
+                    example: Email atau password salah
+      
